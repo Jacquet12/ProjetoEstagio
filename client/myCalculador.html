@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        .fonte{
+            background-image: linear-gradient(15deg, blue, #fff);
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        .valores{
+            color: #fff;
+            padding: 50px;
+
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            align-items: center;
+        }
+        .buttom{
+            width: px;
+            height: 45px;
+            font-size: 25px;
+            margin: 3px;
+            cursor: pointer;
+        }
+
+        #resultado {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 80px;
+            height: 20px;
+            border: 1px solid white;
+            background-color: gray;
+        }
+        #lado{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 150px;
+            height: 20px;
+            border: 1px solid white;
+            background-color: gray;
+            margin-right: 10px;
+        }
+        #error-msg{
+            color: red;
+            font-size: 18px;
+            display: none;
+        }
+
+        #result{
+            display: flex;
+            
+        }
+
+    </style>
+</head>
+<body>
+    <div class="fonte">
+        <h1>Calculator</h1>
+        <p1>Digite o valor de dois dos Lados. O outro sera calculado! <br> </p1>
+        <img src="i1.jpg" width="150" height="160">
+
+        <div class="valores">
+            <form action="/action_page.php">
+                <p id="error-msg">Houve um erro</p><br>
+                <label for="quantity">Lado a:</label>
+                <input type="number" min="0" id="valorA"><br><br>
+                
+                <label for="quantity">Lado b:</label>
+                <input type="number" min="0" id="valorB"><br><br>
+    
+                <label for="quantity">Lado c:</label>
+                <input type="number" min="0" id="valorC"><br><br>
+    
+    
+            </form>
+
+            <div class="buttom">
+                <button type="button" onclick="return calcular()">Calcular</button> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+                <button type="button" onclick="clean()">Limpar</button>
+            </div>
+            <div id="result">
+                <label for="quantity">Lado:  </label><p id="lado"></p>
+                <label for="quantity">Valor:  </label><p id="resultado"></p>
+            </div>          
+        </div>
+    </div>
+
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    function calcular(){
+        const a = document.getElementById('valorA').value;
+        const b = document.getElementById('valorB').value;
+        const c = document.getElementById('valorC').value;
+        
+        if(a == "" && b=="" && c == ""){
+            document.getElementById('error-msg').style.display = 'block';
+            document.getElementById('error-msg').innerHTML = "Os campos estão vazios!!!";
+            return false
+        }else if(a=="" && b =="" || a=="" && c == "" || b=="" && c ==""){
+            document.getElementById('error-msg').style.display = 'block';
+            document.getElementById('error-msg').innerHTML = "Pelo menos dois dos campos tem que estar preenchidos!";
+            return false;
+        }else if(a != "" && b!="" && c != ""){
+            document.getElementById('error-msg').style.display = 'block';
+            document.getElementById('error-msg').innerHTML = "Os tres campos não podem estar preenchidos!";
+        }else{
+
+            const body = { a, b, c }
+            
+            $.ajax({
+              url: "http://127.0.0.1:5000/calculate",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(body)
+
+            }).done(function(response) {
+                console.log(response)
+                if (response.isSuccess === true){
+                    document.getElementById('lado').innerHTML=response.side
+                    document.getElementById('resultado').innerHTML=response.value
+                } else {
+                    document.getElementById('error-msg').style.display = 'block';
+                    document.getElementById('error-msg').innerHTML = "Math Error!!!";
+                }
+            });
+        }
+    }
+    function clean(){
+        document.getElementById('valorA').value="";
+        document.getElementById('valorB').value="";
+        document.getElementById('valorC').value="";
+        document.getElementById('resultado').value="";
+    }
+</script>
+</html>
