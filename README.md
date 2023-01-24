@@ -1,6 +1,5 @@
-# ProjetoEstagio
+ ProjetoEstagio
 About this Project
 
+<p> Esse Repositório foi criado para desenvolver uma calculadora permitindo calcular, os lados de um triangulo retângulo usando o teorema de pitagoras. Entrando dois dos lados do triangulo, a Calculadora calcula o terceiro lado.<br> No caso de utilizar valores negativos, o programa vai retornar um Math error!</p>
 
-this repository is used to develop my new internship project.
-This project is the development of a calculator, allowed to calculate the sides of a right triangle using the pythagoras theorem!
